@@ -38,28 +38,52 @@ class BlogModel():
 
     def open(self):
         "open sqlite3 db connection"
-        pass
+        self.db = sqlite3.connect(self.db_file)
 
     def close(self):
         "close the connection to sqlite3"
-        pass
+        self.db_file.close()
 
     def create_table(self):
         #create the table
-        pass
+        cursor = self.db.cursor()
+        cursor.execute('''CREATE TABLE blogdb(id INTEGER PRIMARY KEY, post_name TEXT,
+                       post_text TEXT)
+            ''')
+        self.db.commit()
 
     def create(self, post_name, post_text):
         #create a new row with data that you pass in
-        pass
+        cursor = self.db.cursor()
+        cursor.execute('''INSERT INTO blogdb(post_name, post_text)
+                  VALUES(?,?)''', (post_name, post_text))
+        self.db.commit()
+        print 'Post created'
 
     def read(self,id):
         # "search for id, and return post_name and post_text as a string"
-        pass
+        cursor = self.db.cursor()
+        cursor.execute('''SELECT post_name, post_text FROM blogdb WHERE id=?''', (id,))
+        post = cursor.fetchone()
+        for i in post:
+            print i
 
     def update(self, id, post_name, post_text):
-        pass
         # "search for id, and set a new post_name and post_text"
+        cursor = self.db.cursor()
+        cursor.execute('''UPDATE blogdb SET post_name = ?, post_text = ? WHERE id = ? ''', (post_name, post_text, id))
+        self.db.commit()
 
     def destroy(self,id):
         #"search for id, and delete that row"
-        pass
+        cursor = self.db.cursor()
+        cursor.execute('''DELETE FROM blogdb WHERE id = ? ''', (id,))
+        self.db.commit()
+
+
+test_db = BlogModel("first_db.db")
+test_db.open()
+test_db.create("First Post!", "All the words!")
+test_db.read("1")
+test_db.update("1", "Better first post", "still more words!")
+test_db.read("1")

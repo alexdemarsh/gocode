@@ -78,6 +78,13 @@ class Dealer(Player):
         self.name = 'Dealer'
         self.holding = []
 
+class Optimal(Player):
+    def __init__(self):
+        self.name = raw_input('Name your optimal bot.')
+        self.holding = []
+
+
+
 class Game:
     def __init__(self):
         #Game setup, adds players and a dealer, creates and shuffles a deck
@@ -146,6 +153,8 @@ class Game:
         for player in self.players:
             if not player.won():
                 self.ask_player_loop(player)
+                
+        #add optima player
 
         print "Dealer reveals the %s of %s." % (ranks_dict[self.dealer.holding[0].rank], suits_dict[self.dealer.holding[0].suit])
 
