@@ -40,7 +40,7 @@ def add_budget_item(state):
 	state["rows"].append(new_budget_item())
 
 def list_budget_items(state):
-	
+	pass
 
 def convert_to_float(num):
 	try:
